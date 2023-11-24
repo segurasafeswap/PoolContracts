@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import './IOrderBookPoolContract.sol';
+import './IStandardPoolContract.sol';
 
-abstract contract OrderBookPoolContract is IOrderBookPoolContract {
+abstract contract StandardPoolContract is IStandardPoolContract {
     struct Order {
         uint256 id;
         address trader;

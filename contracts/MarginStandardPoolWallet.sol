@@ -1,12 +1,12 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import './StandardTradingPool.sol';
 
-
-contract MarginTradingWallet is ReentrancyGuard {
+contract MarginStandardPoolWallet is ReentrancyGuard, StandardTradingPool {
     AggregatorV3Interface internal priceFeed;
     IERC20 public collateralToken;
     uint256 public collateralFactor;

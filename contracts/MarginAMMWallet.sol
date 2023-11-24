@@ -8,9 +8,10 @@ import "@sushiswap/core/contracts/uniswapv2/interfaces/IUniswapV2Pair.sol";
 import "@sushiswap/core/contracts/uniswapv2/interfaces/IUniswapV2Factory.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import './AMMTradingPool.sol';
 
 
-contract MarginAMMWallet is ReentrancyGuard {
+abstract contract MarginAMMWallet is ReentrancyGuard, AMMTradingPool {
     AggregatorV3Interface internal priceFeed;
     IERC20 public collateralToken;
     uint256 public collateralFactor;
@@ -42,10 +43,16 @@ contract MarginAMMWallet is ReentrancyGuard {
     }
 
     function getCollateralValue(address trader) public view returns (uint256) {
-        // Implement the logic to calculate the collateral value
-        // Example: Simply returning the balance; adjust as needed for your logic
-        return collateralBalances[trader];
+        uint256 collateralBalance = collateralBalances[trader];
+        uint256 collateralPrice = getCurrentPrice();
+
+        // Calculate the current market value of the collateral
+        // Assuming both price and balance have the same number of decimals
+        uint256 collateralValue = collateralBalance * collateralPrice;
+        
+        return collateralValue;
     }
+
 
     function getDebtValue(address trader) public view returns (uint256) {
         // Return the debt value for the trader
