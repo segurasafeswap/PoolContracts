@@ -12,6 +12,7 @@ contract GamingERC721NFT is BaseERC721NFT {
     }
 
     mapping(uint256 => GameAsset) public gameAssets;
+    mapping(uint256 => string) public ipfsCIDs;
 
     constructor(string memory name, string memory symbol) BaseERC721NFT(name, symbol) {}
     
@@ -20,6 +21,17 @@ contract GamingERC721NFT is BaseERC721NFT {
         gameAssets[tokenId] = GameAsset(name, rarity);
         // Mint the NFT
         safeMint(msg.sender, tokenId);
+    }
+
+    // Function to set the IPFS CID for a specific token ID
+    function setIPFSCID(uint256 tokenId, string memory cid) public {
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "Caller is not owner nor approved");
+        ipfsCIDs[tokenId] = cid;
+    }
+
+    // Function to get the IPFS CID for a specific token ID
+    function getIPFSCID(uint256 tokenId) public view returns (string memory) {
+        return ipfsCIDs[tokenId];
     }
 
     // Functions for attribute management
