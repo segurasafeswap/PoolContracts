@@ -152,27 +152,4 @@ contract GamingERC1155NFT is BaseERC1155NFT, ERC1155Upgradeable, Ownable, Saleab
 
     
 
-    // Play-to-earn mechanics
-    // ...
-
-    // Provenance and history tracking
-    // ...
-
-    // Marketplace integration functions
-    // ...
-
-    // Royalty payment functions
-    // ...
-
-    // Governance and community engagement functions
-    // ...
-
-    // Security and fraud prevention mechanisms
-    // ...
-
-    // Override transfer functions if necessary to add custom logic
-    // ...
-
-    // Additional functions as per the gaming use case
-    // ...
-
+    
