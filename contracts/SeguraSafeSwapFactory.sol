@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import "./StandardTradingPool.sol";
+import "./AMMTradingPool.sol";
 import "./StableCoinPool.sol";
-import "./OpenBookModelPool.sol";
+import "./StandardTradingPool.sol";
 
 contract SeguraSafeSwapFactory {
 
@@ -13,9 +13,8 @@ contract SeguraSafeSwapFactory {
         sushiSwapRouter = _sushiSwapRouter;
     }
 
-    function createStandardTradingPool() external returns (address) {
-        StandardTradingPool pool = new StandardTradingPool(sushiSwapRouter);
-        // ... other setup
+    function createAMMTradingPool() external returns (address) {
+        AMMTradingPool pool = new AMMTradingPool(sushiSwapRouter);
         return address(pool);
     }
 

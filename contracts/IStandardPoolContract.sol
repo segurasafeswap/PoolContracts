@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-interface IOrderBookPoolContract {
+interface IStandardPoolContract {
     // Events
     event OrderPlaced(uint256 indexed orderId, address indexed trader, bool isBuyOrder, uint256 tokenAmount, uint256 price);
     event OrderCancelled(uint256 indexed orderId);

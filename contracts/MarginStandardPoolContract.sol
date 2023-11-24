@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import './MarginAMMWallet.sol';
+import './MarginStandardPoolWallet.sol';
 
-contract MarginAMMContract {
-    MarginAMMWallet public marginAMMWallet;
+contract MarginStandardPoolContract {
+    MarginStandardPoolWallet public marginStandardPoolWallet;
 
     // State variable for liquidation threshold
     uint256 public liquidationThreshold;
 
     constructor(address _marginTradingWalletAddress, uint256 _liquidationThreshold) {
-        marginAMMWallet = MarginAMMWallet(_marginTradingWalletAddress);
+        marginStandardPoolWallet = MarginStandardPoolWallet(__marginTradingWalletAddress);
         liquidationThreshold = _liquidationThreshold;
     }
 
@@ -22,8 +22,8 @@ contract MarginAMMContract {
 
     // Function to calculate margin health and risk level
     function calculateMarginHealth(address trader) public view returns (uint256 health, RiskLevel level) {
-        uint256 collateralValue = marginAMMWallet.getCollateralValue(trader);
-        uint256 debtValue = marginAMMWallet.getDebtValue(trader);
+        uint256 collateralValue = marginStandardPoolWallet.getCollateralValue(trader);
+        uint256 debtValue = marginStandardPoolWallet.getDebtValue(trader);
 
         require(debtValue > 0, "Debt value cannot be zero");
 
@@ -71,8 +71,8 @@ contract MarginAMMContract {
     require(health < liquidationThreshold, "Liquidation not required");
 
     // Step 2: Calculate the amount to be liquidated
-    uint256 debtAmount = marginAMMWallet.getDebtValue(trader);
-    uint256 collateralAmount = marginAMMWallet.getCollateralValue(trader);
+    uint256 debtAmount = marginStandardPoolWallet.getDebtValue(trader);
+    uint256 collateralAmount = marginStandardPoolWallet.getCollateralValue(trader);
 
     // Determine the amount of collateral to sell. This could involve a liquidation penalty.
     uint256 collateralToSell = calculateLiquidationAmount(debtAmount, collateralAmount);
@@ -80,10 +80,10 @@ contract MarginAMMContract {
     // Step 3: Perform the liquidation
     // This could involve interacting with a DEX or other mechanism to sell collateral
     // For simplicity, let's assume a direct conversion
-    marginAMMWallet.sellCollateral(trader, collateralToSell);
+    marginStandardPoolWallet.sellCollateral(trader, collateralToSell);
 
     // Step 4: Update the trader's debt and collateral balances post-liquidation
-    marginAMMWallet.updateBalancesPostLiquidation(trader, collateralToSell, debtAmount);
+    marginStandardPoolWallet.updateBalancesPostLiquidation(trader, collateralToSell, debtAmount);
 
     // Step 5: Emit a liquidation event
     emit LiquidationExecuted(trader, collateralToSell, debtAmount);

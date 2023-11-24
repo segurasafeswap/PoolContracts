@@ -1,68 +1,119 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import "./PoolContract.sol";
-import "@sushiswap/core/contracts/uniswapv2/interfaces/IUniswapV2Router02.sol";
-import "@sushiswap/core/contracts/uniswapv2/libraries/TransferHelper.sol";
-import "@sushiswap/core/contracts/uniswapv2/interfaces/IUniswapV2Pair.sol";
-import "@sushiswap/core/contracts/uniswapv2/interfaces/IUniswapV2Factory.sol";
-import "@openzeppelin/contracts/interfaces/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./StandardPoolContract.sol";
 
+contract StandardTradingPool is StandardPoolContract {
+    uint256 nextOrderId = 1;
+    mapping(uint256 => Order) private orders;
 
-contract StandardTradingPool is PoolContract, ReentrancyGuard {
-    IUniswapV2Router02 public sushiSwapRouter;
+    event OrderPlaced(uint256 indexed orderId, address indexed trader, bool isBuyOrder, uint256 tokenAmount, uint256 price);
+    event OrderCancelled(uint256 indexed orderId);
+    event TradeExecuted(uint256 indexed buyOrderId, uint256 indexed sellOrderId, uint256 tradedAmount, uint256 tradePrice);
 
-    constructor(address _sushiSwapRouter) {
-        sushiSwapRouter = IUniswapV2Router02(_sushiSwapRouter);
-        // ... other initializations
+    // Constructor can be empty if there's no initialization required
+    constructor() {}
+
+    // Override placeOrder from OrderBookPoolContract
+    function placeOrder(
+        address tokenIn, 
+        address tokenOut, 
+        uint256 amountIn, 
+        uint256 price, 
+        bool isBuyOrder
+    ) public override returns (uint256 orderId) {
+        orderId = nextOrderId++;
+        orders[orderId] = Order({
+            id: orderId,
+            trader: msg.sender,
+            tokenAmount: amountIn,
+            price: price,
+            isBuyOrder: isBuyOrder,
+            isActive: true  // Assuming this field exists in Order struct
+        });
+
+        emit OrderPlaced(orderId, msg.sender, isBuyOrder, amountIn, price);
+        return orderId;
     }
 
-    function swapTokensUsingSushiSwap(
+    // Override cancelOrder from OrderBookPoolContract
+    function cancelOrder(uint256 orderId) public override {
+        require(orders[orderId].trader == msg.sender, "Not your order");
+        require(orders[orderId].isActive, "Order already handled");
+        
+        orders[orderId].isActive = false;
+        emit OrderCancelled(orderId);
+    }
+
+    // Implement matchOrders from OrderBookPoolContract
+    function matchOrders() public override {
+        // Implement the logic for matching buy and sell orders
+    }
+
+    // Additional utility functions as needed...
+}
+
+/*
+
+
+
+import "./OrderBookPoolContract.sol";
+
+contract OpenBookModelPool is OrderBookPoolContract {
+    // State variables for tracking orders
+    mapping(uint256 => Order) private orders;
+    uint256 private nextOrderId = 1;
+
+    // Constructor is simplified as no events are declared here
+    constructor() {
+        // Constructor can initialize state variables if needed
+    }
+
+    // Function to place a new order
+    function placeOrder(
         address tokenIn,
         address tokenOut,
         uint256 amountIn,
-        uint256 amountOutMin,
-        uint256 deadline
-    ) public override returns (uint256 amountOut) {
-        // Transfer tokenIn from the user to this contract
-        TransferHelper.safeTransferFrom(tokenIn, msg.sender, address(this), amountIn);
+        uint256 price,
+        bool isBuyOrder
+    ) public override returns (uint256 orderId) {
+        orderId = nextOrderId++;
+        orders[orderId] = Order({
+            id: orderId,
+            trader: msg.sender,
+            tokenAmount: amountIn,
+            price: price,
+            isBuyOrder: isBuyOrder
+        });
 
-        // Approve the SushiSwap router to spend the token
-        TransferHelper.safeApprove(tokenIn, address(sushiSwapRouter), amountIn);
-
-        address[] memory path = new address[](2);
-        path[0] = tokenIn;
-        path[1] = tokenOut;
-
-        // Execute the swap on SushiSwap
-        uint[] memory amounts = sushiSwapRouter.swapExactTokensForTokens(
-            amountIn,
-            amountOutMin,
-            path,
-            msg.sender,
-            deadline
-        );
-
-        return amounts[path.length - 1];
+        emit OrderPlaced(orderId, msg.sender, amountIn, price, isBuyOrder);
+        return orderId;
     }
 
-    uint256 public tradingFee;
-
-    function setTradingFee(uint256 _tradingFee) external {
-    tradingFee = _tradingFee;
+    function matchOrders() external override {
+        // Implement the logic for matching orders here
     }
 
-    function addLiquidity(uint256 amount) public override {
-        // Implementation for adding liquidity
+    // Function to cancel an order
+    function cancelOrder(uint256 orderId) public override {
+        require(orders[orderId].trader == msg.sender, "You can only cancel your own orders");
+        require(orders[orderId].tokenAmount > 0, "Order does not exist or is already fulfilled");
+
+        orders[orderId].tokenAmount = 0;
+        emit OrderCancelled(orderId);
     }
 
-    function removeLiquidity(uint256 amount) public override {
-        // Implementation for removing liquidity
-    }
+    // Implement the matchOrders function if required or declare the contract abstract
+    // function matchOrders() public override {
+    //     // Matching logic here
+    // }
 
-    function swapTokens(address tokenIn, address tokenOut, uint256 amountIn) public override returns (uint256 amountOut) {
-        // Swap logic implementation
-    }
+    // Utility function to generate a unique order ID could be kept if needed
+    // function generateUniqueOrderId() private returns (uint256) {
+    //     return nextOrderId++;
+    // }
+
+    // Additional functions as needed...
 }
+*/
