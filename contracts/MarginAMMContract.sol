@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
-import './MarginTradingWallet.sol';
+import './MarginAMMWallet.sol';
 
-contract MarginTradingContract {
-    MarginTradingWallet public marginTradingWallet;
+contract MarginAMMContract {
+    MarginAMMWallet public marginAMMWallet;
 
     // State variable for liquidation threshold
     uint256 public liquidationThreshold;
