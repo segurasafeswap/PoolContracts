@@ -55,6 +55,7 @@ contract ArtERC721NFT is BaseERC721NFT {
 
     // Royalty Management
     function payRoyalty(uint256 tokenId, uint256 salePrice) internal {
+        require(_exists(tokenId), "Artwork does not exist");
         RoyaltyInfo memory royalty = royalties[tokenId];
         uint256 royaltyAmount = (salePrice * royalty.percentage) / 10000;
         payable(royalty.recipient).transfer(royaltyAmount);
@@ -62,59 +63,72 @@ contract ArtERC721NFT is BaseERC721NFT {
 
     // Exhibition Rights Management
     function grantExhibitionRights(uint256 tokenId, address exhibitor) public onlyOwner {
-        // Logic to grant exhibition rights
+        require(_exists(tokenId), "Artwork does not exist");
+        // Logic to record exhibition rights (could be a mapping or an event)
     }
 
-    // Authentication and Verification
+    // Verifies the authenticity of an artwork
     function verifyArtwork(uint256 tokenId) public view returns (bool) {
-        // Logic to verify authenticity
-        return true; // Placeholder
+        return _exists(tokenId); // Placeholder for basic check
+        // Extend with more complex logic as needed
     }
 
     // Collaboration and Co-Creation
     function addCollaborator(uint256 tokenId, string memory collaborator) public onlyOwner {
+        require(_exists(tokenId), "Artwork does not exist");
         // Logic to add collaborator information to the artwork
     }
 
     // Bidding and Auction
     function startAuction(uint256 tokenId, uint256 minBid, uint256 duration) public onlyOwner {
-        auctions[tokenId] = Auction(minBid, 0, address(0), block.timestamp + duration, true);
-    }
+    require(_exists(tokenId), "Artwork does not exist");
+    auctions[tokenId] = Auction(minBid, 0, address(0), block.timestamp + duration, true);
+}
 
+    // Allows users to place bids in an ongoing auction
     function placeBid(uint256 tokenId) public payable {
         Auction storage auction = auctions[tokenId];
         require(auction.isActive && block.timestamp < auction.endTimestamp, "Auction not active");
         require(msg.value > auction.highestBid, "Bid too low");
 
-        // Refund the previous highest bidder
-        payable(auction.highestBidder).transfer(auction.highestBid);
+        if (auction.highestBidder != address(0)) {
+            payable(auction.highestBidder).transfer(auction.highestBid);
+        }
 
         auction.highestBid = msg.value;
         auction.highestBidder = msg.sender;
     }
 
+    // Ends the auction and handles the transfer of the artwork
     function endAuction(uint256 tokenId) public onlyOwner {
         Auction storage auction = auctions[tokenId];
         require(block.timestamp >= auction.endTimestamp, "Auction ongoing");
 
         auction.isActive = false;
-        _transfer(ownerOf(tokenId), auction.highestBidder, tokenId);
-        payRoyalty(tokenId, auction.highestBid);
+        if (auction.highestBidder != address(0)) {
+            _transfer(ownerOf(tokenId), auction.highestBidder, tokenId);
+            payRoyalty(tokenId, auction.highestBid);
+        }
     }
 
-    // Digital Interaction
+    // Allows for interaction with a digital artwork
     function interactWithArtwork(uint256 tokenId) public {
-        // Logic for digital interaction (e.g., AR/VR)
+        require(_exists(tokenId), "Artwork does not exist");
+        // Placeholder logic for digital interaction
+        // This could include AR/VR integrations, digital displays, or other interactive features
+        // The actual implementation would depend on your project's requirements
+        // For example, updating an on-chain state, emitting an event, or interacting with external systems
     }
 
     // Community Engagement
     function voteOnArtwork(uint256 tokenId) public {
+        require(_exists(tokenId), "Artwork does not exist");
         // Voting logic for artwork owners
     }
 
-    // Limited Edition Releases
+    // Function to mint multiple editions of an artwork
     function mintLimitedEdition(uint256 tokenId, uint256 editionSize) public onlyOwner {
-        // Minting logic for limited edition artworks
+        // Logic to mint limited edition artworks
     }
 
     // Special Events and Unlockables

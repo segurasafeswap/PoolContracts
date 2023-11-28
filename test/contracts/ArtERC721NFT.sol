@@ -39,7 +39,13 @@ contract ArtERC721NFT is BaseERC721NFT {
     // Special events or unlockables for owners
     mapping(uint256 => string) public specialEvents;
 
-    constructor(string memory name, string memory symbol) BaseERC721NFT(name, symbol) {}
+    constructor() {
+        // This constructor is left empty for upgradeable pattern
+    }
+
+    function initialize(string memory name, string memory symbol) public initializer {
+        BaseERC721NFT.initializeBaseERC721(name, symbol);
+    }
 
     function safeMintWithRoyalty(address to, uint256 tokenId, Artwork memory artwork, RoyaltyInfo memory royalty) public onlyOwner {
         safeMint(to, tokenId);

@@ -5,34 +5,68 @@ import "./BaseERC1155NFT.sol";
 
 /// @title RealEstate ERC1155 NFT 
 /// @notice Concrete implementation of the realestate erc1155 nft operations
-contract RealEstateERC1155NFT is BaseERC1155NFT {
-    struct LandParcel {
-        string region;
-        uint256 parcelSize; // e.g., square feet or square meters
-        string metadataURI; // Additional details
+contract RealEstateAndVirtualLandERC1155NFT is BaseERC1155NFT {
+    struct Property {
+        string name;
+        string location;
+        bool isVirtual; // true for virtual land, false for real estate
+        uint256 size; // Size in square meters for real estate, or virtual units for virtual land
+        string uri; // Metadata URI
     }
 
-    mapping(uint256 => LandParcel) public landParcels;
+    mapping(uint256 => Property) public properties;
 
     constructor(string memory uri) BaseERC1155NFT(uri) {}
 
-    function mintLandParcel(address to, uint256 id, uint256 amount, bytes memory data, LandParcel memory landParcel) public onlyOwner {
-        mint(to, id, amount, data);
-        landParcels[id] = landParcel;
+    // Create a new property (real estate or virtual land)
+    function createProperty(uint256 propertyId, string memory name, string memory location, bool isVirtual, uint256 size, string memory uri, uint256 amount) public onlyOwner {
+        properties[propertyId] = Property(name, location, isVirtual, size, uri);
+        _mint(msg.sender, propertyId, amount, "");
     }
 
-    // Additional functions for RealEstateERC1155:
-    // - Property Type Management: Define and manage different types of properties
-    // - Fractional Ownership: Implement fractional ownership of properties
-    // - Rental Shares: Issue tokens representing shares in rental income
-    // - Bulk Transfer: Facilitate bulk transfer of multiple units or shares
-    // - Utility Tokens: Issue utility tokens for services related to the property
-    // - Redeem Mechanism: Allow redemption of tokens for physical or virtual property usage
-    // - Property Upgrade and Development: Manage upgrades or developments for a property type
-    // - Community Development: Functions for community-driven development projects
-    // - Sustainability Credits: Issue and manage sustainability credits or certifications
-    // - Legal Framework Integration: Incorporate legal frameworks for property management
-    // - Revenue Sharing: Implement revenue sharing mechanisms among token holders
-    // - Dynamic Pricing: Enable dynamic pricing based on demand, utility, or other factors
-    // - Asset Backed Tokens: Ensure tokens are backed by tangible real estate assets
+    // Update property metadata URI
+    function setPropertyURI(uint256 propertyId, string memory newUri) public onlyOwner {
+        require(_exists(propertyId), "Property does not exist");
+        properties[propertyId].uri = newUri;
+    }
+
+    // Transfer property (supports partial ownership transfer)
+    function transferProperty(address to, uint256 propertyId, uint256 amount) public {
+        require(balanceOf(msg.sender, propertyId) >= amount, "Insufficient balance");
+        _safeTransferFrom(msg.sender, to, propertyId, amount, "");
+    }
+
+    // Rent out real estate or virtual land
+    function rentProperty(uint256 propertyId, address renter, uint256 duration) public onlyOwner {
+        require(_exists(propertyId), "Property does not exist");
+        // Logic to handle rental agreements
+    }
+
+    // Sell property (whole or partial)
+    function sellProperty(uint256 propertyId, uint256 amount, uint256 price) public onlyOwner {
+        require(_exists(propertyId), "Property does not exist");
+        // Logic to handle property sale
+    }
+
+    // Develop property (e.g., construct buildings in virtual land)
+    function developProperty(uint256 propertyId, string memory developmentDetails) public onlyOwner {
+        require(_exists(propertyId), "Property does not exist");
+        // Logic to handle property development
+    }
+
+    // Property appraisal
+    function appraiseProperty(uint256 propertyId) public view returns (uint256) {
+        require(_exists(propertyId), "Property does not exist");
+        // Logic to appraise the property (placeholder)
+        return 0; // Placeholder value
+    }
+
+    // Utility and helper functions
+    function _exists(uint256 id) internal view returns (bool) {
+        return properties[id].size > 0;
+    }
+
+    // Override necessary functions from ERC1155 and BaseERC1155NFT
+    // Implement any necessary overrides from base contracts
 }
+
