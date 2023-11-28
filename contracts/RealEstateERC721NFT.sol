@@ -10,6 +10,8 @@ contract RealEstateERC721NFT is BaseERC721NFT {
         string location;
         uint256 area; // e.g., square feet or square meters
         string metadataURI; // Additional details about the property
+        bool isRented; // Indicates if the property is currently rented
+        address currentTenant; // Address of the current tenant, if any
     }
 
     mapping(uint256 => Property) public properties;
@@ -21,17 +23,57 @@ contract RealEstateERC721NFT is BaseERC721NFT {
         properties[tokenId] = property;
     }
 
-    // Additional functions for RealEstateERC721:
-    // - Property Management: Functions to manage property details and updates
-    // - Lease and Renting Mechanisms: Enable leasing or renting of virtual or real properties
-    // - Transfer and Sale: Secure transfer and sale of properties with proper validation
-    // - Property Improvement and Modification: Record and manage improvements or changes to properties
-    // - Utility Management: Handle utilities and services associated with the property
-    // - Access Control: Manage who has access or usage rights to the property
-    // - Collaboration and Sharing: Enable multiple parties to collaborate or share ownership
-    // - Land Development: Functions related to development or construction on virtual land
-    // - Environmental Attributes: Manage and record environmental characteristics and sustainability aspects
-    // - Provenance and History: Track the history and past transactions of the property
-    // - Spatial and Geographic Data: Incorporate geospatial data and mapping integration
-    // - Legal Compliance: Ensure compliance with real-world legal and regulatory requirements
+    // Update property details
+    function updateProperty(uint256 tokenId, Property memory newPropertyDetails) public onlyOwner {
+        require(_exists(tokenId), "Property does not exist");
+        properties[tokenId] = newPropertyDetails;
+    }
+
+    // Lease the property
+    function leaseProperty(uint256 tokenId, address tenant, uint256 leaseDuration) public onlyOwner {
+        require(_exists(tokenId), "Property does not exist");
+        require(properties[tokenId].isRented == false, "Property already rented");
+        properties[tokenId].isRented = true;
+        properties[tokenId].currentTenant = tenant;
+        // Logic to handle lease duration and terms
+    }
+
+    // End the lease
+    function endLease(uint256 tokenId) public onlyOwner {
+        require(_exists(tokenId), "Property does not exist");
+        properties[tokenId].isRented = false;
+        properties[tokenId].currentTenant = address(0);
+        // Additional logic for lease termination
+    }
+
+    // Transfer the property
+    function transferProperty(address from, address to, uint256 tokenId) public {
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "Not authorized");
+        require(properties[tokenId].isRented == false, "Cannot transfer rented property");
+        _transfer(from, to, tokenId);
+    }
+
+    // Property improvement
+    function improveProperty(uint256 tokenId, string memory improvementDetails) public onlyOwner {
+        require(_exists(tokenId), "Property does not exist");
+        // Logic to record property improvement
+    }
+
+    // Handle utility management
+    function manageUtilities(uint256 tokenId, string memory utilityDetails) public onlyOwner {
+        require(_exists(tokenId), "Property does not exist");
+        // Logic for utility management
+    }
+
+    // Override _exists to check if the property exists
+    function _exists(uint256 tokenId) internal view override returns (bool) {
+        return bytes(properties[tokenId].location).length > 0;
+    }
+
+    // Override necessary functions from ERC721 and BaseERC721NFT
+    // Override _beforeTokenTransfer to handle additional logic, like rent status
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override {
+        super._beforeTokenTransfer(from, to, tokenId);
+        require(properties[tokenId].isRented == false, "Cannot transfer rented property");
+    }
 }
