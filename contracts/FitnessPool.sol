@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 
+/// @title Fitness Pool
+/// @notice Concrete implementation of the fitness pool operations
 contract FitnessPool {
     // ... existing code ...
 

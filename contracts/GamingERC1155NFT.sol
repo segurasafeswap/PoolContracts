@@ -8,6 +8,8 @@ import "./SaleableNFT1155Contract.sol";
 import "./BaseERC1155NFT.sol";
 import "./GamingCurrency.sol";
 
+/// @title Gaming ERC1155 NFT
+/// @notice Abstract contract for gaming erc1155 nft operations
 contract GamingERC1155NFT is BaseERC1155NFT, ERC1155Upgradeable, Ownable, SaleableNFT1155Contract, GamingCurrency {
     // Events
     event ItemCrafted(address indexed crafter, uint256 recipeId, uint256 resultId);
@@ -144,7 +146,7 @@ contract GamingERC1155NFT is BaseERC1155NFT, ERC1155Upgradeable, Ownable, Saleab
     }
 
     // Additional Functions as per the Gaming Use Case
-    function distributeRewards(uint256 tokenId, address player) public {
+    function distributeRewards(uint256 tokenId, address player) internal {
     // Logic for distributing in-game rewards
     _mint(player, tokenId, 1, "");
     }

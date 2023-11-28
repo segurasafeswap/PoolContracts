@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import './MarginStandardPoolWallet.sol';
 
+/// @title Margin Standard Pool Contract
+/// @notice Concrete implementation of the margin standard pool contract lending operations
 contract MarginStandardPoolContract {
     MarginStandardPoolWallet public marginStandardPoolWallet;
 

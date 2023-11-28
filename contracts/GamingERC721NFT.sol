@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC721NFT.sol";
 
+/// @title Gaming ERC721 NFT
+/// @notice Abstract contract for gaming erc721 nft operations
 contract GamingERC721NFT is BaseERC721NFT {
     // Structs for defining attributes, history, etc.
     struct GameAsset {

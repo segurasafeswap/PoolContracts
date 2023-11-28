@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC721NFT.sol";
 
+/// @title Fashion Luxury Goods ERC721 NFT
+/// @notice Abstract contract for fashion luxury goods erc721 nft operations
 contract FashionLuxuryGoodsERC721NFT is BaseERC721NFT {
     constructor(string memory name, string memory symbol) BaseERC721NFT(name, symbol) {}
 

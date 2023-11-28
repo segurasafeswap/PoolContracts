@@ -55,74 +55,86 @@ contract ArtERC721NFT is BaseERC721NFT {
 
     // Royalty Management
     function payRoyalty(uint256 tokenId, uint256 salePrice) internal {
-        RoyaltyInfo memory royalty = royalties[tokenId];
-        uint256 royaltyAmount = (salePrice * royalty.percentage) / 10000;
-        payable(royalty.recipient).transfer(royaltyAmount);
+    require(_exists(tokenId), "Artwork does not exist");
+    RoyaltyInfo memory royalty = royalties[tokenId];
+    uint256 royaltyAmount = (salePrice * royalty.percentage) / 10000;
+    payable(royalty.recipient).transfer(royaltyAmount);
     }
 
     // Exhibition Rights Management
     function grantExhibitionRights(uint256 tokenId, address exhibitor) public onlyOwner {
-        // Logic to grant exhibition rights
+    require(_exists(tokenId), "Artwork does not exist");
+    // Logic to record exhibition rights (could be a mapping or an event)
     }
 
     // Authentication and Verification
     function verifyArtwork(uint256 tokenId) public view returns (bool) {
-        // Logic to verify authenticity
-        return true; // Placeholder
+    return _exists(tokenId); // Basic check for existence
+    // Extend with more complex logic as needed
     }
+
 
     // Collaboration and Co-Creation
     function addCollaborator(uint256 tokenId, string memory collaborator) public onlyOwner {
-        // Logic to add collaborator information to the artwork
+    require(_exists(tokenId), "Artwork does not exist");
+    // Extend the artwork structure to include collaborator data and update here
     }
+
 
     // Bidding and Auction
     function startAuction(uint256 tokenId, uint256 minBid, uint256 duration) public onlyOwner {
-        auctions[tokenId] = Auction(minBid, 0, address(0), block.timestamp + duration, true);
+    require(_exists(tokenId), "Artwork does not exist");
+    auctions[tokenId] = Auction(minBid, 0, address(0), block.timestamp + duration, true);
     }
 
     function placeBid(uint256 tokenId) public payable {
-        Auction storage auction = auctions[tokenId];
-        require(auction.isActive && block.timestamp < auction.endTimestamp, "Auction not active");
-        require(msg.value > auction.highestBid, "Bid too low");
+    Auction storage auction = auctions[tokenId];
+    require(auction.isActive && block.timestamp < auction.endTimestamp, "Auction not active");
+    require(msg.value > auction.highestBid, "Bid too low");
 
-        // Refund the previous highest bidder
+    if (auction.highestBidder != address(0)) {
         payable(auction.highestBidder).transfer(auction.highestBid);
+    }
 
-        auction.highestBid = msg.value;
-        auction.highestBidder = msg.sender;
+    auction.highestBid = msg.value;
+    auction.highestBidder = msg.sender;
     }
 
     function endAuction(uint256 tokenId) public onlyOwner {
-        Auction storage auction = auctions[tokenId];
-        require(block.timestamp >= auction.endTimestamp, "Auction ongoing");
+    Auction storage auction = auctions[tokenId];
+    require(block.timestamp >= auction.endTimestamp, "Auction ongoing");
 
-        auction.isActive = false;
+    auction.isActive = false;
+    if (auction.highestBidder != address(0)) {
         _transfer(ownerOf(tokenId), auction.highestBidder, tokenId);
         payRoyalty(tokenId, auction.highestBid);
+    }
     }
 
     // Digital Interaction
     function interactWithArtwork(uint256 tokenId) public {
-        // Logic for digital interaction (e.g., AR/VR)
+    require(_exists(tokenId), "Artwork does not exist");
+    // Add your logic for digital interaction
     }
 
     // Community Engagement
     function voteOnArtwork(uint256 tokenId) public {
-        // Voting logic for artwork owners
+    require(_exists(tokenId), "Artwork does not exist");
+    // Implement voting logic (e.g., through a mapping or an event)
     }
 
     // Limited Edition Releases
     function mintLimitedEdition(uint256 tokenId, uint256 editionSize) public onlyOwner {
-        // Minting logic for limited edition artworks
+    // Implement logic to mint multiple editions of an artwork
     }
 
     // Special Events and Unlockables
     function setSpecialEvent(uint256 tokenId, string memory eventInfo) public onlyOwner {
-        specialEvents[tokenId] = eventInfo;
+    require(_exists(tokenId), "Artwork does not exist");
+    specialEvents[tokenId] = eventInfo;
     }
 
-    // Additional utility functions as needed...
+    // Implement any additional utility functions needed for your contract
 
-    // Override necessary functions from ERC721 and BaseERC721NFT
+    // Override functions from ERC721 and BaseERC721NFT as necessary
 }

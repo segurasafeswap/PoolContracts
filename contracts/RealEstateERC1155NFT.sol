@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC1155NFT.sol";
 
+/// @title RealEstate ERC1155 NFT 
+/// @notice Concrete implementation of the realestate erc1155 nft operations
 contract RealEstateERC1155NFT is BaseERC1155NFT {
     struct LandParcel {
         string region;

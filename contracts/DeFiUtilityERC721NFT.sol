@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC721NFT.sol";
 
+/// @title DeFi Utilitiy ERC721 NFT 
+/// @notice Concrete implementation of the defi utility erc721 nft operations
 contract DeFiUtilityERC721NFT is BaseERC721NFT {
     constructor(string memory name, string memory symbol) BaseERC721NFT(name, symbol) {}
 

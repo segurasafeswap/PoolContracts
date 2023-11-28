@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC1155NFT.sol";
 
+/// @title MusicMedia ERC1155 NFT 
+/// @notice Concrete implementation of the music media erc1155 nft operations
 contract MusicMediaERC1155NFT is BaseERC1155NFT {
     constructor(string memory uri) BaseERC1155NFT(uri) {}
 

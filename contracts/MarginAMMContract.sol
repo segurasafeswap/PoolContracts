@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import './MarginAMMWallet.sol';
 
+/// @title Margin AMM Contract
+/// @notice Concrete implementation of the margin standard amm contract lending operations
 contract MarginAMMContract {
     MarginAMMWallet public marginAMMWallet;
 

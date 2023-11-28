@@ -5,6 +5,8 @@ import "./AMMTradingPool.sol";
 import "./StableCoinPool.sol";
 import "./StandardTradingPool.sol";
 
+/// @title Segura Safe Swap Factory
+/// @notice Concrete implementation of the SeguraSafeSwap factory all operations
 contract SeguraSafeSwapFactory {
 
     address public sushiSwapRouter;

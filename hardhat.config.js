@@ -11,6 +11,12 @@ const BSC_Testnet = process.env.BSC_TESTNET;
 
 module.exports = {
   solidity: "0.8.20",
+  paths: {
+    sources: "./test/contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts"
+  },
   networks: {
     mainnet: {
       url: BSC_Mainnet,

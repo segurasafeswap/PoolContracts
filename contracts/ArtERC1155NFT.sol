@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC1155NFT.sol";
 
+/// @title Art ERC1155 NFT 
+/// @notice Concrete implementation of the art erc1155 nft operations
 contract ArtERC1155NFT is BaseERC1155NFT {
     struct Artwork {
         string title;

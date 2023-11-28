@@ -10,7 +10,8 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import './AMMTradingPool.sol';
 
-
+/// @title Margin AMM Wallet
+/// @notice Concrete implementation of the margin amm wallet lending operations
 abstract contract MarginAMMWallet is ReentrancyGuard, AMMTradingPool {
     AggregatorV3Interface internal priceFeed;
     IERC20 public collateralToken;

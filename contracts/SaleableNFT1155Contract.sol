@@ -4,6 +4,8 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
+/// @title Saleable NFT 1155 Contract
+/// @notice Abstract contract for saleable nft 1155 contract operations
 abstract contract SaleableNFT1155Contract is ERC1155, Ownable {
     // ... other contract code ...
 

@@ -5,7 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-
+/// @title Margin Trading Wallet
+/// @notice Concrete implementation of the margin trading wallet lending operations
 contract MarginTradingWallet is ReentrancyGuard {
     AggregatorV3Interface internal priceFeed;
     IERC20 public collateralToken;

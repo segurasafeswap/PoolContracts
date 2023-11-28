@@ -4,6 +4,8 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./PoolContract.sol";
 
+/// @title High Yield Pool
+/// @notice Concrete implementation of the high yield pool operations
 contract HighYieldPool is PoolContract {
     IERC20 public liquidityToken;
     IERC20 public rewardToken;
