@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import './IStandardPoolContract.sol';
 
+/// @title Standard Trading Pool Contract
+/// @notice Abstract contract for standard pool operations
 abstract contract StandardPoolContract is IStandardPoolContract {
     struct Order {
         uint256 id;
@@ -10,6 +12,7 @@ abstract contract StandardPoolContract is IStandardPoolContract {
         uint256 tokenAmount;
         uint256 price;
         bool isBuyOrder;
+        //bool isActive;
     }
 
     // Implementation of some common logic or virtual functions...

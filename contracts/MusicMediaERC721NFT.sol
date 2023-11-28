@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC721NFT.sol";
 
+/// @title MusicMedia ERC721 NFT 
+/// @notice Concrete implementation of the music media erc721 nft operations
 contract MusicMediaERC721NFT is BaseERC721NFT {
     constructor(string memory name, string memory symbol) BaseERC721NFT(name, symbol) {}
 

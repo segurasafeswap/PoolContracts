@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import './MarginTradingWallet.sol';
 
+/// @title Margin Trading Contract
+/// @notice Concrete implementation of the margin trading contract lending operations
 contract MarginTradingContract {
     MarginTradingWallet public marginTradingWallet;
 

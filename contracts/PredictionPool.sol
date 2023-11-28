@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./PoolContract.sol";
 
+/// @title Prediction Pool
+/// @notice Concrete implementation of the prediction pool operations
 contract PredictionPool is PoolContract {
     IERC20 public bettingToken;
 

@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC1155NFT.sol";
 
+/// @title Education Certification ERC1155 NFT 
+/// @notice Concrete implementation of the education certification erc1155 nft operations
 contract EducationCertificationERC1155NFT is BaseERC1155NFT {
     constructor(string memory uri) BaseERC1155NFT(uri) {}
 

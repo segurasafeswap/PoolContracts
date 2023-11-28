@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC721NFT.sol";
 
+/// @title RealEstate ERC721 NFT 
+/// @notice Concrete implementation of the realestate erc721 nft operations
 contract RealEstateERC721NFT is BaseERC721NFT {
     struct Property {
         string location;

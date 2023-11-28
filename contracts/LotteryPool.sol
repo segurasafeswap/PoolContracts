@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./PoolContract.sol";
 
+/// @title Lottery Pool
+/// @notice Concrete implementation of the lottery pool operations
 contract LotteryPool is PoolContract, Ownable {
     IERC20 public lotteryToken;
     uint256 public ticketPrice;

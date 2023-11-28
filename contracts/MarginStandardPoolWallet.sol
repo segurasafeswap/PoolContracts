@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import './StandardTradingPool.sol';
 
+/// @title Margin Standard Pool Wallet
+/// @notice Concrete implementation of the margin standard pool wallet lending operations
 contract MarginStandardPoolWallet is ReentrancyGuard, StandardTradingPool {
     AggregatorV3Interface internal priceFeed;
     IERC20 public collateralToken;

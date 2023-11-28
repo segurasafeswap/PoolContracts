@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC1155NFT.sol";
 
+/// @title DeFi Utilitiy ERC1155 NFT 
+/// @notice Concrete implementation of the defi utility erc1155 nft operations
 contract DeFiUtilityERC1155NFT is BaseERC1155NFT {
     constructor(string memory uri) BaseERC1155NFT(uri) {}
 

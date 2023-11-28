@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./PoolContract.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title Betting Pool
+/// @notice Concrete implementation of the betting pool operations
 contract BettingPool is PoolContract, Ownable {
     IERC20 public bettingToken;
 

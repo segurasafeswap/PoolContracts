@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title Farming Pool
+/// @notice Concrete implementation of the farming pool operations
 contract FarmingPool is Ownable, ReentrancyGuard {
     IERC20 public lpToken;
     IERC20 public rewardToken;

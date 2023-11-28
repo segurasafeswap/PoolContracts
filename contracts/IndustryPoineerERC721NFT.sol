@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 import "./BaseERC721NFT.sol";
 
+/// @title Industry Pioneer ERC721 NFT
+/// @notice Abstract contract for industry pioneer erc721 nft operations
 contract IndustryPioneerERC721NFT is BaseERC721NFT {
     constructor(string memory name, string memory symbol) BaseERC721NFT(name, symbol) {}
 

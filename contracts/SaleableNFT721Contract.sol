@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-contract SaleableNFT1155Contract {
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+
+/// @title Saleable NFT 721 Contract
+/// @notice Abstract contract for saleable nft 721 contract operations
+contract SaleableNFT721Contract {
     // ... other contract code ...
 
     // Mapping from token ID to its sale price

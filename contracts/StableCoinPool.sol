@@ -1,14 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
-
-
 pragma solidity ^0.8.20;
-
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./PoolContract.sol";
 
-
-
+/// @title Stable Coin Pool 
+/// @notice Concrete implementation of the stable coin pool operations
 contract StableCoinPool is PoolContract {
     // State variables specific to StablecoinPool
     uint256 public tradingFee;

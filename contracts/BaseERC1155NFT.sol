@@ -5,6 +5,8 @@ import "@openzeppelin/contracts-upgradeable/token/ERC1155/ERC1155Upgradeable.sol
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
+/// @title Base ERC1155 NFT Contract
+/// @notice Abstract contract for base erc1155 nft operations
 abstract contract BaseERC1155NFT is Initializable, ERC1155Upgradeable, OwnableUpgradeable {
     function initializeBaseERC1155(string memory uri, address initialOwner) internal initializer {
         __ERC1155_init(uri);
